@@ -4,6 +4,8 @@ from src.map import Map
 from src.robot import Robot
 from src.satellite import Satellite
 from src.position import Position
+from src.uplink import Uplink
+from src.controller import Controller
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--size-x", help="Sets the size for grid on x-axis")
@@ -25,11 +27,34 @@ startY = int(args.start_y) if args.start_y else 0
 
 startFacing = args.start_facing if args.start_facing else "SOUTH"
 
+# The map is quite vital I would say. :)
 map = Map(sizeX, sizeY)
-satellite = Satellite(map)
-position = Position(startX, startY)
-robot = Robot('Botty', 'unique_identifier_string', position)
 
+# Big brother is needed to oversee things ofc.
+satellite = Satellite(map)
+
+# Super secret robots needs an uplink to speak with secret satellites.
+uplink = Uplink(satellite)
+
+# The robot really need a way to know where the heck it is.
+position = Position(startX, startY, startFacing)
+
+# Set up the robot
+robot = Robot(
+    'Botty', 
+    'unique_identifier_string', 
+    position,
+    uplink
+    )
+
+# Add robot to the created map
 map.add_robot(robot)
-map.move_robot(robot, commands)
+
+# Plug in the controller!
+controller = Controller(robot)
+
+# Run the passed sequence
+controller.input(commands)
+
+
 
