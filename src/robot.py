@@ -6,58 +6,44 @@ class Robot(object):
     FACING_WEST  = 3 # Facing left on x-axis
 
     position = None
+    uplink = None
 
-    facingMap = {
-            FACING_NORTH: "up",
-            FACING_EAST:  "right",
-            FACING_SOUTH: "down",
-            FACING_WEST:  "left"
-        }
-
-    facing_string_map = {
-            FACING_NORTH: "north",
-            FACING_EAST:  "east",
-            FACING_SOUTH: "south",
-            FACING_WEST:  "west"
-    }
-
-
-    def __init__(self, name, identifier, position):
+    def __init__(self, name, identifier, position, uplink):
         self.name = name
         self.identifier = identifier
-        self.currentFacing = self.FACING_SOUTH
         self.position = position
+        self.uplink = uplink
 
     def sayName(self):
         return self.name
 
     def get_facing_string(self):
-        return self.facing_string_map[self.currentFacing].upper()
+        return self.position.get_facing_string()
 
     def tellFacing(self):
         print "I am facing %s"%(self.get_facing_String())
 
     def turn(self, direction):
-        if direction in ["left", "l"]:
-            return self.turnLeft()
-        elif direction in ["right", "r"]:
-            return self.turnRight()
-        print "%s: Could not turn!"%(self.name)
-        return False
+        return self.position.turn(direction)
 
-    def turnLeft(self):
-        print "%s: Turning left!"%(self.name)
-        if self.currentFacing == self.FACING_NORTH:
-            self.currentFacing = self.FACING_WEST
-        else:
-            self.currentFacing = self.currentFacing - 1
-        return True
+    def move_forward(self):
+        posX, posY = self.position.calculate_move_forward()
+        positionClear = self.uplink.is_position_clear(posX, posY)
+        positionOob = self.uplink.is_position_out_of_bounds(posX, posY)
+        if  positionClear is not True:
+            print "Robot: Could not move forward because of obstacle in %s,%s"%(posX, posY)
+            return False
+        elif positionOob is True:
+            print "Robot: Could not move forward because of %s,%s being out of bounds"%(posX, posY)
+            return False
+        print "Robot: Moving forward to %s,%s"%(posX, posY)
+        return self.position.move(posX, posY)
 
-    def turnRight(self):
-        print "%s: Turning right!"%(self.name)
-        if self.currentFacing == self.FACING_WEST:
-            self.currentFacing = self.FACING_NORTH
-        else:
-            self.currentFacing = self.currentFacing + 1
-        return True
-
+    def move_backwards(self):
+        posX, posY = self.position.calculate_move_backwards()
+        positionClear = self.uplink.is_position_clear(posX, posY)
+        positionOob = self.uplink.is_position_out_of_bounds(posX, posY)
+        if  positionClear is not True or positionOob is True:
+            return False
+        print "Robot: Moving backwards to %s,%s"%(posX, posY)
+        return self.position.move(posX, posY)
