@@ -24,11 +24,8 @@ class Map(object):
     Each robot is registered under its unique identifier already
     set on the robot.
     """
-    def add_robot(self, robot, posX=0, posY=0):
+    def add_robot(self, robot):
         self.robots.append(robot)
-        # If adding multiple robots. Make sure to calculate
-        # wether or not starting space is already occupied and adjust
-        self.robot_positions[robot.identifier] = Position(posX, posY)
 
     def add_obstacle(self, posX, posY):
         self.obstacle_positions.append(Position(posX, posY))
@@ -54,8 +51,8 @@ class Map(object):
     """
     def get_robot_position(self, robot):
         if self.is_robot_playing(robot):
-            posX = self.robot_positions[robot.identifier].positionX
-            posY = self.robot_positions[robot.identifier].positionY
+            posX = robot.position.positionX
+            posY = robot.position.positionY
             return "%s,%s"%(posX,posY)
     
     """
@@ -85,8 +82,8 @@ class Map(object):
     Moves passed robot forward, also validates if move is possible
     """
     def move_robot_forward(self, robot):
-        posX = self.robot_positions[robot.identifier].positionX
-        posY = self.robot_positions[robot.identifier].positionY
+        posX = robot.position.positionX
+        posY = robot.position.positionY
         if robot.currentFacing == Robot.FACING_EAST:
             posX = posX + 1
         elif robot.currentFacing == Robot.FACING_WEST:
@@ -101,8 +98,8 @@ class Map(object):
     Moves passed robot backwards, also validates if move is possible
     """
     def move_robot_backwards(self, robot):
-        posX = self.robot_positions[robot.identifier].positionX
-        posY = self.robot_positions[robot.identifier].positionY
+        posX = robot.position.positionX
+        posY = robot.position.positionY
         if robot.currentFacing == Robot.FACING_EAST:
             posX = posX - 1
         elif robot.currentFacing == Robot.FACING_WEST:
@@ -121,8 +118,8 @@ class Map(object):
     """
     def place_robot(self, robot, posX, posY):
         if self.is_placement_possible(posX, posY) is True:
-            self.robot_positions[robot.identifier].positionX = posX
-            self.robot_positions[robot.identifier].positionY = posY
+            robot.position.positionX = posX
+            robot.position.positionY = posY
             print "Board: %s moved to %s!"%(robot.name, self.get_robot_position(robot))
             return True
         return False
@@ -147,9 +144,9 @@ class Map(object):
             collideY = obstacle_position.positionY == posY
             if collideX is True and collideY is True:
                 return True
-        for key in self.robot_positions:
-            collideX = self.robot_positions[key].positionX == posX
-            collideY = self.robot_positions[key] == posY
+        for robot in self.robots:
+            collideX = robot.position.positionX == posX
+            collideY = robot.position.positionY == posY
             if collideX is True and collideY is True:
                 return True
         return False

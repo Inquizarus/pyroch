@@ -5,22 +5,28 @@ class Robot(object):
     FACING_SOUTH = 2 # Facing down on y-axis
     FACING_WEST  = 3 # Facing left on x-axis
 
-    def __init__(self, name, identifier):
+    position = None
+
+    facingMap = {
+            FACING_NORTH: "up",
+            FACING_EAST:  "right",
+            FACING_SOUTH: "down",
+            FACING_WEST:  "left"
+        }
+
+    facing_string_map = {
+            FACING_NORTH: "north",
+            FACING_EAST:  "east",
+            FACING_SOUTH: "south",
+            FACING_WEST:  "west"
+    }
+
+
+    def __init__(self, name, identifier, position):
         self.name = name
         self.identifier = identifier
         self.currentFacing = self.FACING_SOUTH
-        self.facingMap = {
-            self.FACING_NORTH: "up",
-            self.FACING_EAST:  "right",
-            self.FACING_SOUTH: "down",
-            self.FACING_WEST:  "left"
-        }
-        self.facing_string_map = {
-            self.FACING_NORTH: "north",
-            self.FACING_EAST:  "east",
-            self.FACING_SOUTH: "south",
-            self.FACING_WEST:  "west"
-        }
+        self.position = position
 
     def sayName(self):
         return self.name

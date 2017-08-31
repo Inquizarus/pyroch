@@ -3,6 +3,7 @@ import argparse
 from src.map import Map
 from src.robot import Robot
 from src.satellite import Satellite
+from src.position import Position
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--size-x", help="Sets the size for grid on x-axis")
@@ -26,9 +27,9 @@ startFacing = args.start_facing if args.start_facing else "SOUTH"
 
 map = Map(sizeX, sizeY)
 satellite = Satellite(map)
+position = Position(startX, startY)
+robot = Robot('Botty', 'unique_identifier_string', position)
 
-robot = Robot('Botty', 'unique_identifier_string')
-
-map.add_robot(robot, startX, startY)
+map.add_robot(robot)
 map.move_robot(robot, commands)
 
