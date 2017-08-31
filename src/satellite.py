@@ -1,3 +1,7 @@
+"""
+The satellite have the ability to scan the map
+for obstacles and robots occupying space.
+"""
 class Satellite(object):
     
     def __init__(self, map):
@@ -9,9 +13,20 @@ class Satellite(object):
             collideY = obstacle_position.positionY == posY
             if collideX is True and collideY is True:
                 return True
-        for key in self.map.robot_positions:
-            collideX = self.map.robot_positions[key].positionX == posX
-            collideY = self.map.robot_positions[key] == posY
+        for robot in self.map.robots:
+            collideX = robot.position.positionX == posX
+            collideY = robot.position.positionY == posY
             if collideX is True and collideY is True:
                 return True
+        return False
+
+    """
+    Checks if passed position coordinates are outside of current
+    board grid
+    """
+    def is_coordinates_out_of_bounds(self, posX, posY):
+        oob_posX = posX < 0 or posX > (self.map.sizeX-1)
+        oob_posY = posY < 0 or posY > (self.map.sizeY-1)
+        if oob_posX is True or oob_posY is True:
+            return True
         return False
