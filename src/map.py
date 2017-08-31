@@ -30,7 +30,17 @@ class Map(object):
     Adds an obstacle at passed coordinates to the map
     """
     def add_obstacle(self, posX, posY):
+        print "Map: Adding obstacle at %s,%s"%(posX, posY)
         self.obstacle_positions.append(Position(posX, posY))
+
+    """
+    Adds multiple obstacles to the map with a list of strings
+    where each string follow the pattern x,y
+    """
+    def add_obstacles(self, obstacles):
+        for obstacle in obstacles:
+            posX, posY = obstacle.split(",")
+            self.add_obstacle(int(posX), int(posY))
 
     """
     Counts the currently playing robots
