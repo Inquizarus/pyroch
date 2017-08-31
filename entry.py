@@ -17,7 +17,6 @@ parser.add_argument("--start-facing", "-sf", help="Sets the initial facing of ro
 parser.add_argument("--obstacles", "-o", help="Adding one or more obstacles by providing x and y axis positions", nargs='+')
 
 args = parser.parse_args()
-print args
 commands = args.sequence if args.sequence else []
 obstacles = args.obstacles if args.obstacles else []
 
