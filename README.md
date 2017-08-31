@@ -3,11 +3,11 @@ Simple program which navigates a robot on a grid, taking parameter to modify the
 
 ## Running it
 ```bash
-python entry.php [args...]
+python entry.py [args...]
 ```
 *Example*
 ```bash
-python entry.php --size-x 10 --size-y 10 --sequence fflff
+python entry.py --size-x 10 --size-y 10 --sequence fflff
 ```
 Refer to command list further down the page for more details.
 ## Running tests
