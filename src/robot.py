@@ -1,10 +1,5 @@
 class Robot(object):
 
-    FACING_NORTH = 0 # Facing up on y-axis
-    FACING_EAST  = 1 # Facing right on x-axis
-    FACING_SOUTH = 2 # Facing down on y-axis
-    FACING_WEST  = 3 # Facing left on x-axis
-
     position = None
     uplink = None
 
